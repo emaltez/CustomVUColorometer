@@ -8,7 +8,7 @@ public class VUWriter
     private static String meterPrefix = "BandMeter";
     private static int numBands = 0;
     private static int width = 300;
-    private static int height = 2;
+    private static int height = 6;
 
     public static void main(String[] args)
     {
@@ -24,7 +24,7 @@ public class VUWriter
             int[] color4 = {242, 38, 93};
             int[][] colors = {color1, color2, color3, color4};
 
-            numBands = 298;
+            numBands = 149;
 
 
 
@@ -57,7 +57,7 @@ public class VUWriter
     public static void printHeading()
     {
         VUScript.println("[Rainmeter]");
-        VUScript.println("Update=10");
+        VUScript.println("Update=25");
         VUScript.println("DynamicWindowSize=1");
         VUScript.println("BackgroundMode=1");
         VUScript.println();
@@ -80,9 +80,9 @@ public class VUWriter
         VUScript.println("Measure=Plugin");
         VUScript.println("Plugin=AudioLevel");
         VUScript.println("Port=Output");
-        VUScript.println("FFTSize=1024");
+        VUScript.println("FFTSize=4096");
         VUScript.println("FFTAttack=5");
-        VUScript.println("FFTDecay=100");
+        VUScript.println("FFTDecay=300");
         VUScript.println("Bands="+numBands);
         VUScript.println();
     }
@@ -142,7 +142,7 @@ public class VUWriter
             VUScript.printf("[%s%d]\n", meterPrefix, i);
             VUScript.println("Meter=Shape");
             VUScript.println("X=0r");
-            VUScript.println("Y=0R");
+            VUScript.println("Y=-1R");
             VUScript.println("DynamicVariables=1");
             VUScript.println("Shape=Rectangle 0,0,"+width+","+height+" | Fill Color ([crBand"+i+"]),([cgBand"+i+"]),([cbBand"+i+"])");
             VUScript.println();
