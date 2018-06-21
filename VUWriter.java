@@ -5,6 +5,9 @@ This class is what produces the .ini file
 to create a Rainmeter VU meter
 */
 
+/*============
+IMPORTS
+============*/
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -58,7 +61,7 @@ public class VUWriter
             VUScript.close();
         }catch(IOException e)
         {
-            System.out.println(e);
+            System.out.println("IO Error: " + e.toString());
         }
     }
 
