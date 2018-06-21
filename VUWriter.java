@@ -1,4 +1,15 @@
-import java.io.*;
+/**
+VUWriter - by Eduardo Maltez
+
+This class is what produces the .ini file
+to create a Rainmeter VU meter
+*/
+
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+
+
 
 public class VUWriter
 {
@@ -25,9 +36,6 @@ public class VUWriter
             int[][] colors = {color1, color2, color3, color4};
 
             numBands = 149;
-
-
-
 
 
             //print sections
