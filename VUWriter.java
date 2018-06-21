@@ -41,6 +41,9 @@ public class VUWriter
             numBands = 149;
 
 
+            CustomWindow customIO = new CustomWindow();
+            
+
             //print sections
             printHeading();
             VUScript.println("[Variables]");
