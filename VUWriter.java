@@ -22,7 +22,9 @@ public class VUWriter
     private static String meterPrefix = "BandMeter";
     private static int numBands = 0;
     private static int width = 300;
-    private static int height = 6;
+    private static int bandHeight = 0;
+    private static int bandLeap = 0;
+    private static int meterHeight = 900;
 
     public static void main(String[] args)
     {
@@ -32,17 +34,18 @@ public class VUWriter
             FileWriter scriptFile = new FileWriter("VUColorometerTest.ini");
             VUScript = new PrintWriter(scriptFile);
             //colors (may change using -C)
-            int[] color1 = {77, 49, 198};
-            int[] color2 = {247, 27, 225};
-            int[] color3 = {255, 0, 157};
-            int[] color4 = {242, 38, 93};
+            int[] color1 = {2, 27, 68};
+            int[] color2 = {21, 204, 8};
+            int[] color3 = {244, 241, 34};
+            int[] color4 = {234, 75, 75};
             int[][] colors = {color1, color2, color3, color4};
 
-            numBands = 149;
+            numBands = 78;
+            bandHeight = meterHeight/numBands;
+            bandLeap = meterHeight%numBands;
 
+            //CustomWindow customIO = new CustomWindow();
 
-            CustomWindow customIO = new CustomWindow();
-            
 
             //print sections
             printHeading();
@@ -71,7 +74,7 @@ public class VUWriter
     public static void printHeading()
     {
         VUScript.println("[Rainmeter]");
-        VUScript.println("Update=25");
+        VUScript.println("Update=1");
         VUScript.println("DynamicWindowSize=1");
         VUScript.println("BackgroundMode=1");
         VUScript.println();
@@ -143,22 +146,26 @@ public class VUWriter
 
     public static void printMeters()
     {
+        boolean leapFlag = (bandLeap != 0);
+        int bHeight = bandHeight;
+        if(leapFlag && ((numBands-1)%bandLeap == 0)) bHeight = bandHeight+1;
 
         VUScript.printf("[%s%d]\n", meterPrefix, numBands-1);
         VUScript.println("Meter=Shape");
         VUScript.println("X=0");
         VUScript.println("Y=0");
         VUScript.println("DynamicVariables=1");
-        VUScript.println("Shape=Rectangle 0,0,"+width+","+height+" | Fill Color ([crBand"+(numBands-1)+"]),([cgBand"+(numBands-1)+"]),([cbBand"+(numBands-1)+"])");
+        VUScript.println("Shape=Rectangle 0,0,"+width+","+bandHeight+" | Fill Color ([crBand"+(numBands-1)+"]),([cgBand"+(numBands-1)+"]),([cbBand"+(numBands-1)+"]) | StrokeWidth 0");
         VUScript.println();
         for(int i=numBands-2; i>=0; i--)
         {
+            bHeight = (leapFlag && ((numBands-1)%bandLeap == 0)) ? bandHeight+1 : bandHeight;
             VUScript.printf("[%s%d]\n", meterPrefix, i);
             VUScript.println("Meter=Shape");
             VUScript.println("X=0r");
-            VUScript.println("Y=-1R");
+            VUScript.println("Y=0R");
             VUScript.println("DynamicVariables=1");
-            VUScript.println("Shape=Rectangle 0,0,"+width+","+height+" | Fill Color ([crBand"+i+"]),([cgBand"+i+"]),([cbBand"+i+"])");
+            VUScript.println("Shape=Rectangle 0,0,"+width+","+bandHeight+" | Fill Color ([crBand"+i+"]),([cgBand"+i+"]),([cbBand"+i+"]) | StrokeWidth 0");
             VUScript.println();
         }
     }
