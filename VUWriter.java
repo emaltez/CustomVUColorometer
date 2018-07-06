@@ -40,7 +40,7 @@ public class VUWriter
             int[] color4 = {234, 75, 75};
             int[][] colors = {color1, color2, color3, color4};
 
-            numBands = 78;
+            numBands = 31;
             bandHeight = meterHeight/numBands;
             bandLeap = meterHeight%numBands;
 
@@ -97,9 +97,9 @@ public class VUWriter
         VUScript.println("Measure=Plugin");
         VUScript.println("Plugin=AudioLevel");
         VUScript.println("Port=Output");
-        VUScript.println("FFTSize=4096");
-        VUScript.println("FFTAttack=5");
-        VUScript.println("FFTDecay=300");
+        VUScript.println("FFTSize=2048");
+        VUScript.println("FFTAttack=1");
+        VUScript.println("FFTDecay=125");
         VUScript.println("Bands="+numBands);
         VUScript.println();
     }
@@ -146,26 +146,29 @@ public class VUWriter
 
     public static void printMeters()
     {
-        boolean leapFlag = (bandLeap != 0);
         int bHeight = bandHeight;
-        if(leapFlag && ((numBands-1)%bandLeap == 0)) bHeight = bandHeight+1;
+        double heightMult = (double)meterHeight/numBands;
+        long currHeight = Math.round((numBands)*heightMult);
+        long prevHeight = Math.round((numBands-1)*heightMult);
 
         VUScript.printf("[%s%d]\n", meterPrefix, numBands-1);
         VUScript.println("Meter=Shape");
         VUScript.println("X=0");
         VUScript.println("Y=0");
         VUScript.println("DynamicVariables=1");
-        VUScript.println("Shape=Rectangle 0,0,"+width+","+bandHeight+" | Fill Color ([crBand"+(numBands-1)+"]),([cgBand"+(numBands-1)+"]),([cbBand"+(numBands-1)+"]) | StrokeWidth 0");
+        VUScript.println("Shape=Rectangle 0,0,"+width+","+(currHeight-prevHeight)+" | Fill Color ([crBand"+(numBands-1)+"]),([cgBand"+(numBands-1)+"]),([cbBand"+(numBands-1)+"]) | StrokeWidth 0");
         VUScript.println();
+
         for(int i=numBands-2; i>=0; i--)
         {
-            bHeight = (leapFlag && ((numBands-1)%bandLeap == 0)) ? bandHeight+1 : bandHeight;
+            currHeight = prevHeight;
+            prevHeight = Math.round((i)*heightMult);
             VUScript.printf("[%s%d]\n", meterPrefix, i);
             VUScript.println("Meter=Shape");
             VUScript.println("X=0r");
             VUScript.println("Y=0R");
             VUScript.println("DynamicVariables=1");
-            VUScript.println("Shape=Rectangle 0,0,"+width+","+bandHeight+" | Fill Color ([crBand"+i+"]),([cgBand"+i+"]),([cbBand"+i+"]) | StrokeWidth 0");
+            VUScript.println("Shape=Rectangle 0,0,"+width+","+(currHeight-prevHeight)+" | Fill Color ([crBand"+i+"]),([cgBand"+i+"]),([cbBand"+i+"]) | StrokeWidth 0");
             VUScript.println();
         }
     }
