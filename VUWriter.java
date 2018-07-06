@@ -13,7 +13,8 @@ import java.io.PrintWriter;
 import java.io.IOException;
 
 
-
+//im too deep to change the name but this is a
+//misnomer since VU has nothing to do with spectrum
 public class VUWriter
 {
     private static PrintWriter VUScript;
@@ -24,27 +25,27 @@ public class VUWriter
     private static int width = 300;
     private static int bandHeight = 0;
     private static int bandLeap = 0;
-    private static int meterHeight = 900;
+    private static int meterHeight = 850;
 
     public static void main(String[] args)
     {
         try
         {
             //initialize default values
-            FileWriter scriptFile = new FileWriter("VUColorometerTest.ini");
+            FileWriter scriptFile = new FileWriter("CubicSpectrometerTest.ini");
             VUScript = new PrintWriter(scriptFile);
             //colors (may change using -C)
-            int[] color1 = {2, 27, 68};
+            int[] color1 = {33, 33, 33};
             int[] color2 = {21, 204, 8};
             int[] color3 = {244, 241, 34};
             int[] color4 = {234, 75, 75};
             int[][] colors = {color1, color2, color3, color4};
 
-            numBands = 31;
+            numBands = 56;
             bandHeight = meterHeight/numBands;
             bandLeap = meterHeight%numBands;
 
-            //CustomWindow customIO = new CustomWindow();
+            CustomWindow customIO = new CustomWindow();
 
 
             //print sections

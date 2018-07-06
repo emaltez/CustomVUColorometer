@@ -30,8 +30,6 @@ public class CustomWindow extends JFrame
 
         
 
-
-
         setVisible(true);
     }
 
